@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evolving the Prototype Journey: Lifelong Vision-and-Language Navigation with Prototype Adaptation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #fafafa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            line-height: 1.2;
+        }
+
+
+        .author {
+            margin: 0 5px;
+        }
+
+        .author-superscript {
+            font-size: 0.8em;
+            color: #007bff;
+            font-weight: 600;
+        }
+
+        .affiliation {
+            margin: 5px 0;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 12px 28px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-arxiv {
+            background-color: #000000;
+            color: white;
+        }
+
+        .btn-video {
+            background-color: #000000;
+            color: white;
+        }
+
+        .btn-code {
+            background-color: #000000;
+            color: white;
+        }
+
+        .btn-data {
+            background-color: #000000;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-icon {
+            width: 22px;
+            height: 22px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .btn svg.btn-icon {
+            fill: currentColor;
+        }
+
+        .image-container {
+            display: flex;     
+            justify-content: center; 
+            align-items: center;    
+            margin: 20px 0;       
+        }
+
+        .image-container img {
+            max-width: 100%;  
+            height: auto;    
+            border-radius: 12px;
+        }
+
+        .author {
+            text-align: center; 
+            margin: 10px 0 20px 0;
+            font-size: 20px;
+        }
+
+        .author a {
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: 500; 
+            transition: color 0.3s;
+        }
+
+        .author a:hover {
+            color: #0c47a1;
+            text-decoration: underline;
+        }
+
+        .section {
+            margin: 50x 0;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+
+        .experiment-section{
+            background: #F8F9FE;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .section-title::before,
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 2px;
+            flex: 1;
+            background-color: #333;
+            margin-left: 20px;
+        }
+
+        .section-subtitle {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin: 20px 0 15px;
+            padding-left: 12px;
+            border-left: 4px solid #667eea;
+            text-align: left;
+        }
+
+
+        .section-subtitle::after {
+            content: '';
+            position: relative;
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(90deg, #764ba2, #667eea);
+            border-radius: 2px;
+        }
+
+        .video-container {
+            display: flex;
+            justify-content: center;   
+            gap: 24px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .comparison-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .grid-wrapper {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+        }
+
+        .comparison-item {
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .comparison-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .comparison-item h3 {
+            margin: 0;
+            padding: 24px 28px;
+            font-size: 20px;
+            font-weight: 600;
+            color: #2c3e50;
+            background: #f8f9fa;
+            text-align: left;
+            line-height: 1.5;
+            border-bottom: 3px solid #e9ecef;
+        }
+
+        .comparison-item h3 .highlight {
+            color: #d32f2f;
+            font-weight: 700;
+        }
+        
+        .video-card {
+            flex: 1 1 45%;
+            max-width: auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+            text-align: center;
+            max-height: auto;
+            position: relative;
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; 
+        }
+
+        .video-meta {
+            text-align: center;
+            padding: 5px 0;
+        }
+
+        .video-card video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            font-size: 14px;
+            padding: 2px 6px;
+            border-radius: 6px;
+        }
+
+        .video-title {
+            flex: 1;
+            padding: 5px;           
+            text-align: center;   
+            display: flex;
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            width: auto;      
+            min-height: auto;   
+            margin: auto auto; 
+        }
+
+        .video-instruction {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e88e5;  
+            margin: 8px 0;
+            line-height: 1.5;
+            font-weight: bold;
+            padding: 10px 10px;
+        }
+
+        .video-scene {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 15px;
+            font-weight: 500;
+            color: #8e24aa;  
+            margin: 6px 0;
+            font-weight: bold;
+        }
+
+        .video-environment {
+            font-family: 'Trebuchet MS', Helvetica, sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            color: #2e7d32;
+            margin: 6px 0 12px;
+            font-weight: bold;
+
+        }
+
+        .tldr {
+            background: #f8f9ff;
+            border-left: 4px solid #667eea;
+        }
+
+        .tldr-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .tldr-content {
+            font-size: 1.1rem;
+            color: #555;
+            line-height: 1.7;
+        }
+
+        .subsection-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #34495e;
+            margin: 30px 0 20px 0;
+        }
+
+        .content-text {
+            padding: 2px;
+            font-size: 140%;
+            color: #4A4A4A;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .content-paper-text {
+            padding: 2px;
+            font-size: 120%;
+            color: #4A4A4A;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            text-align: center;
+            max-width: 90%;  
+            margin-left: auto; 
+            margin-right: auto; 
+        }
+
+        .abstract-text{
+            font-size: 17px;             
+            line-height: 1.8;       
+            color: #333;       
+            text-align: justify;   
+        }
+        .abstract-content{
+            padding: 30px;               
+            margin: 40px auto;         
+            max-width: 900px;           
+            background-color: #f9f9f9;   
+            border-radius: 6px;        
+        }
+
+        .experiment-section {
+            background: #f8f9ff;
+        }
+
+        .authors {
+            text-align: center;
+            margin: 12px auto 24px;
+            max-width: 900px;
+            font-size: 1.15rem;
+            line-height: 1.9;
+            color: #2c3e50;
+        }
+
+        .author-item {
+            white-space: nowrap; 
+        }
+
+        .authors .ieee {
+            font-style: italic;
+            color: #555;
+        }
+
+        .orcid-link {
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 2px;
+            line-height: 0;
+        }
+
+        .orcid-icon {
+            width: 15px;
+            height: 15px;
+            transition: transform 0.2s ease;
+        }
+
+        .orcid-link:hover .orcid-icon {
+            transform: scale(1.25);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .title {
+                font-size: 2rem;
+            }
+            
+            .buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .section {
+                padding: 25px 20px 50px;
+                margin-top: 60px;
+                margin-bottom: 60px;
+            }
+        }
+    </style>
+
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$','$$'], ['\\[','\\]']],
+                processEscapes: true,
+                processEnvironments: true,
+                packages: {'[+]': ['base', 'ams', 'noerrors', 'noundefined', 'boldsymbol']},
+                tags: 'ams',
+                formatError: (jax, err) => {
+                    console.error('MathJax error:', err);
+                    return jax.formatError(err);
+                }
+            },
+            options: {
+                skipHtmlTags: ['script','noscript','style','textarea','pre','code'],
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            },
+            startup: {
+                ready: () => {
+                    console.log('MathJax is loaded, but not yet initialized');
+                    MathJax.startup.defaultReady();
+                    console.log('MathJax is initialized, and the initial typeset is queued');
+                }
+            },
+            loader: {
+                load: ['input/tex', 'output/chtml', 'ui/menu']
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/startup.js"></script>
+    
+
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">Evolving the Prototype Journey: Lifelong Vision-and-Language Navigation with Prototype Adaptation</h1>
+
+            <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+                <symbol id="orcid-icon" viewBox="0 0 256 256">
+                    <path fill="#A6CE39" d="M256 128c0 70.7-57.3 128-128 128S0 198.7 0 128 57.3 0 128 0s128 57.3 128 128z"/>
+                    <path fill="#FFF" d="M86.3 186.2H70.9V79.1h15.4v107.1zM108.9 79.1h41.6c39.6 0 57 28.3 57 53.6 0 27.5-21.5 53.6-56.8 53.6h-41.8V79.1zm15.4 93.3h24.5c34.9 0 42.9-26.5 42.9-39.7 0-21.5-13.7-39.7-43.7-39.7h-23.7v79.4zM88.7 56.8c0 5.5-4.5 10.1-10.1 10.1s-10.1-4.6-10.1-10.1c0-5.6 4.5-10.1 10.1-10.1s10.1 4.6 10.1 10.1z"/>
+                </symbol>
+            </svg>
+
+            <div class="authors">
+                <span class="author-item">Gan Li<a href="https://orcid.org/0009-0004-1995-1823" target="_blank" class="orcid-link" title="ORCID"><svg class="orcid-icon"><use href="#orcid-icon"/></svg></a></span>,
+                <span class="author-item">Xudong Wang<a href="https://orcid.org/0009-0008-3278-0028" target="_blank" class="orcid-link" title="ORCID"><svg class="orcid-icon"><use href="#orcid-icon"/></svg></a></span>,
+                <span class="author-item">Yue Liao<a href="https://orcid.org/0000-0002-2671-0655" target="_blank" class="orcid-link" title="ORCID"><svg class="orcid-icon"><use href="#orcid-icon"/></svg></a></span>,
+                <span class="author-item">Xuewei Lv<a href="https://orcid.org/0009-0008-6081-5099" target="_blank" class="orcid-link" title="ORCID"><svg class="orcid-icon"><use href="#orcid-icon"/></svg></a></span>,
+                <span class="author-item">Jiahua Dong<a href="https://orcid.org/0000-0001-8545-4447" target="_blank" class="orcid-link" title="ORCID"><svg class="orcid-icon"><use href="#orcid-icon"/></svg></a></span>,
+                <span class="author-item">Xiyao Liu<a href="https://orcid.org/0000-0002-9978-1286" target="_blank" class="orcid-link" title="ORCID"><svg class="orcid-icon"><use href="#orcid-icon"/></svg></a></span>,
+                <span class="author-item">Yanbo Wang<a href="https://orcid.org/0000-0001-7997-434X" target="_blank" class="orcid-link" title="ORCID"><svg class="orcid-icon"><use href="#orcid-icon"/></svg></a></span>,
+                <span class="author-item">Pinle Qin<a href="https://orcid.org/0000-0002-9086-7366" target="_blank" class="orcid-link" title="ORCID"><svg class="orcid-icon"><use href="#orcid-icon"/></svg></a></span>,
+                <span class="author-item">Lianqing Liu<a href="https://orcid.org/0000-0002-2271-5870" target="_blank" class="orcid-link" title="ORCID"><svg class="orcid-icon"><use href="#orcid-icon"/></svg></a></span>, <span class="ieee">Senior Member, IEEE</span>,
+                and <span class="author-item">Zhi Han<a href="https://orcid.org/0000-0002-8039-6679" target="_blank" class="orcid-link" title="ORCID"><svg class="orcid-icon"><use href="#orcid-icon"/></svg></a></span>, <span class="ieee">Member, IEEE</span>
+            </div>
+
+            <div class="buttons">
+                <a href="https://github.com/Lifelong-EverWalker/EverWalker" class="btn btn-code">
+                    <svg class="btn-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+                    </svg>
+                    &nbsp&nbspCode
+                </a>
+            </div>
+        </header>
+
+        <div class="image-container">
+            <img src="static/F1.png" alt="Main picture" style="width: 80%; height: auto;">
+        </div>
+
+        <div class="content-text">
+            The proposed Lifelong Robotic vision-and-language navigation task. 
+            a). EverWalker enables lifelong learning and continual evolution across diverse navigation scenes. 
+            It accumulates navigation experience into a dynamic prototype bank during lifelong learning and achieves 
+            task-specific inference by providing task-specific LoRA with hypernetwork adaptation. 
+            b). EverWalker performs well in anti-forgetting, during lifelong learning. 
+            c). As EverWalker learns across diverse navigation scenes, it demonstrates superior generalization
+            performance in unseen scenes.
+        </div>
+        
+        <div class="abstract-content">
+            <h2 class="section-title">Abstract</h2>
+            <div class="abstract-text">
+                Adapting vision-and-language navigation (VLN) agents to continually evolving environments is essential 
+                for dynamic real-world deployment. However, naively fine-tuning agents on new scenes often leads to catastrophic 
+                forgetting of previously learned scenes and degraded generalization to unseen environments. 
+                In this paper, we propose <strong>EverWalker</strong>, a lifelong VLN agent designed to thrive 
+                in an ever-changing world by evolving its navigation knowledge through a prototype-driven journey. 
+                Instead of storing independent step-specific adapters, EverWalker introduces a 
+                <strong>Dynamic Prototype Bank (DyproBank)</strong> that incrementally accumulates compact scene prototypes, 
+                capturing essential navigation knowledge. Building upon this evolving prototype space, 
+                we further propose a <strong>Prototype-conditioned Hypernetwork (PHYP-Net)</strong> that dynamically generates 
+                task-adaptive LoRA parameters conditioned on aggregated prototypes, enabling efficient step-specific inference 
+                without explicit task identifiers. We also introduce a multi-level distillation strategy to facilitate 
+                progressive knowledge accumulation across continual scenes. 
+                Extensive simulator and real-world experiments are performed to demonstrate the effectiveness and superiority of EverWalker. 
+            </div>
+        </div>
+
+        <section class="section">
+            <h2 class="section-title">Method</h2>
+            <div class="image-container">
+                <img src="static/F2.png" alt="Main picture">
+            </div>
+            <p class="content-text">Illustration for the proposed EverWalker. Our framework consists of two core components: A Dynamic Prototype Bank maintains an evolving library of scene prototypes with soft routing for knowledge aggregation. A Prototype Hypernetwork dynamically generates task-specific LoRA conditioned on aggregated prototypes, enabling adaptive navigation while preserving shared knowledge. </p>
+            
+        </section>
+
+        <section class="section experiment-section">
+            <h2 class="section-title">EverWalker Algorithms</h2>
+            <div style="height: 10%;width: auto;">
+                <div class="image-container">
+                    <img src="static/algorithm1.png" alt="Main picture" width="85%" height="auto">
+                </div>
+                <div class="image-container">
+                    <img src="static/algorithm2.png" alt="Main picture" width="85%" height="auto">
+                </div>
+            </div>
+            <p class="content-text">For clarity, a summary of the proposed EverWalker training algorithm and the inference algorithm is provided above.</p>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">Task Setting</h2>
+            <div class="image-container">
+                <img src="static/F3.png" alt="Main picture">
+            </div>
+            <p class="content-text">
+                Illustration of our Lifelong Vision-Language Navigation (LVLN) benchmark. The benchmark consists of a sequence of 24 distinct navigation tasks. The blue region (Tasks 1--18) represents the Continual Learning Phase, where the agent sequentially learns across diverse seen environments. The orange region (Tasks 19--24) denotes the Zero-Shot Generalization Phase, evaluated on entirely unseen scenes to assess the agent's evolving adaptability.
+            </p>
+        </section>
+
+        <section class="section experiment-section">
+            <h2 class="section-title">Real-World Experiments Setting</h2>
+            <div class="image-container">
+                <img src="static/F4.png" alt="Main picture">
+            </div>
+            <div class="content-text">
+                Illustration of the proposed robotic navigation system. The platform integrates a quadruped robot for mobility, a camera for visual perception, and a remote server for running the EverWalker agent, enabling closed-loop real-world navigation.
+                To validate the effectiveness of EverWalker in real-world scenarios, we construct a physical robotic navigation platform as illustrated in Figure. The hardware configuration consists of a quadruped robot (DeepRobotDog Lite2) serving as the mobile agent, a high-definition RGB camera (Hikvision DS-E12) mounted for egocentric perception, a high-bandwidth portable WiFi communication module, and a remote computation server equipped with 8 NVIDIA RTX A6000 GPUs.
+            </div>
+        </section>   
+
+        <section class="section">
+            <h2 class="section-title">Continual Learning Phase Experiments</h2>
+            <div class="content-text">
+                <div class="video-container">
+                    <!-- left video -->
+                    <div class="video-card">
+                        <div class="video-meta">
+                            <h3 class="video-scene">Scene: 8WUmhLawc2A</h3>
+                        </div>
+                        <div class="video-wrapper">
+                            <video controls>
+                                <source src="static/video-ContinualLearning/Task1_8WUmhLawc2A_615.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="video-overlay">Speed 1X</div>
+                        </div>
+                        <div class="video-title">
+                            <h3 class="video-instruction"><p style="color: red;font-weight: bold;font-size: 22px;">Task1</p>Please walk around the left side of the table and enter the living room on the left. From the living room, enter the room on the right and find the bathroom inside. Go into the bathroom.</h3>
+                        </div>
+                    </div>
+
+                    <!-- right video -->
+                    <div class="video-card">
+                        <div class="video-meta">
+                            <h3 class="video-scene">Scene: real-world scene 1</h3>
+                        </div>
+                        <div class="video-wrapper">
+                            <video controls>
+                                <source src="static/video-ContinualLearning/Task2.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="video-overlay">Speed 1X</div>
+                        </div>
+                        <div class="video-title">
+                            <h3 class="video-instruction"><p style="color: red;font-weight: bold;font-size: 22px;">Task2</p>Go forward, go around the right side of the red ball, then go around the left side of the yellow railing, and continue forward until you find the red cylinder.</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-text">
+                <div class="video-container">
+                    <!-- left video -->
+                    <div class="video-card">
+                        <div class="video-meta">
+                            <h3 class="video-scene">Scene: ur6pFq6Qu1A</h3>
+                        </div>
+                        <div class="video-wrapper">
+                            <video controls>
+                                <source src="static/video-ContinualLearning/Task3_ur6pFq6Qu1A_716.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="video-overlay">Speed 1X</div>
+                        </div>
+                        <h3 class="video-instruction"><p style="color: red;font-weight: bold;font-size: 22px;">Task3</p>Find the hallway, go through the hallway between the cabinet and the water dispenser, keep walking straight, go through the door at the end of the hallway, and stop at the entrance to the living room.</h3>
+                    </div>
+
+                    <!-- right video -->
+                    <div class="video-card">
+                        <div class="video-meta">
+                            <h3 class="video-scene">Scene: r47D5H71a5s</h3>
+                        </div>
+                        <div class="video-wrapper">
+                            <video controls>
+                                <source src="static/video-ContinualLearning/Task4_r47D5H71a5s_34.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="video-overlay">Speed 1X</div>
+                        </div>
+                        <h3 class="video-instruction"><p style="color: red;font-weight: bold;font-size: 22px;">Task4</p>Walk straight ahead from the bar on the right, go through the door in front, turn right and enter the rightmost room, stop in front of the wardrobe in the room.</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-text">
+                <div class="video-container">
+                    <!-- left video -->
+                    <div class="video-card">
+                        <div class="video-meta">
+                            <h3 class="video-scene">Scene: real-world scene 2</h3>
+                        </div>
+                        <div class="video-wrapper">
+                            <video controls>
+                                <source src="static/video-ContinualLearning/Task5.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="video-overlay">Speed 1X</div>
+                        </div>
+                        <h3 class="video-instruction"><p style="color: red;font-weight: bold;font-size: 22px;">Task5</p>Walk forward, passing between the yellow cones and the blue cylinders, then continue forward, passing to the left of the white soccer ball, and stop in front of the red ball.</h3>
+                    </div>
+
+                    <!-- right video -->
+                    <div class="video-card">
+                        <div class="video-meta">
+                            <h3 class="video-scene">Scene: ac26ZMwG7aT</h3>
+                        </div>
+                        <div class="video-wrapper">
+                            <video controls>
+                                <source src="static/video-ContinualLearning/Task6_ac26ZMwG7aT_213.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="video-overlay">Speed 1X</div>
+                        </div>
+                        <h3 class="video-instruction"><p style="color: red;font-weight: bold;font-size: 22px;">Task6</p>Exit the room through the door, walk into the hallway on the left, walk forward and turn left into the living room on the left, then stop in front of the dining table on the right side of the living room.</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-text">
+                <div class="video-container">
+                    <!-- left video -->
+                    <div class="video-card">
+                        <div class="video-meta">
+                            <h3 class="video-scene">Scene: 2n8kARJN3HM</h3>
+                        </div>
+                        <div class="video-wrapper">
+                            <video controls>
+                                <source src="static/video-ContinualLearning/Task7_2n8kARJN3HM_533.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="video-overlay">Speed 1X</div>
+                        </div>
+                        <h3 class="video-instruction"><p style="color: red;font-weight: bold;font-size: 22px;">Task7</p>Enter the bedroom from your current location, exit through the other door, then walk into the hall and turn left to the entrance door of the hall.</h3>
+                    </div>
+
+                    <!-- right video -->
+                    <div class="video-card">
+                        <div class="video-meta">
+                            <h3 class="video-scene">Scene: mJXqzFtmKg4</h3>
+                        </div>
+                        <div class="video-wrapper">
+                            <video controls>
+                                <source src="static/video-ContinualLearning/Task8_mJXqzFtmKg4_210.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="video-overlay">Speed 1X</div>
+                        </div>
+                        <h3 class="video-instruction"><p style="color: red;font-weight: bold;font-size: 22px;">Task8</p>Find the exit from your current location, go through the door into the living room, turn right after exiting the door, and find the piano in the corner against the wall.</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-text">
+                <div class="video-container">
+                    <!-- left video -->
+                    <div class="video-card">
+                        <div class="video-meta">
+                            <h3 class="video-scene">Scene: E9uDoFAP3SH</h3>
+                        </div>
+                        <div class="video-wrapper">
+                            <video controls>
+                                <source src="static/video-ContinualLearning/Task9_E9uDoFAP3SH_544.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="video-overlay">Speed 1X</div>
+                        </div>
+                        <h3 class="video-instruction"><p style="color: red;font-weight: bold;font-size: 22px;">Task9</p>After leaving the house, walk into the living room, then turn right and walk to the entrance of the room on the left side of the stairs, then stop.</h3>
+                    </div>
+
+                    <!-- right video -->
+                    <div class="video-card">
+                        <div class="video-meta">
+                            <h3 class="video-scene">Scene: real-world scene 3</h3>
+                        </div>
+                        <div class="video-wrapper">
+                            <video controls>
+                                <source src="static/video-ContinualLearning/Task10.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="video-overlay">Speed 1X</div>
+                        </div>
+                        <h3 class="video-instruction"><p style="color: red;font-weight: bold;font-size: 22px;">Task10</p>Walk forward, passing the two yellow traffic cones to the left. You'll then see a red traffic cone; pass it to the right. Continue walking forward until you stop in front of the yellow traffic cone near the window.</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-text">
+                <div class="video-container">
+                    <!-- left video -->
+                    <div class="video-card">
+                        <div class="video-meta">
+                            <h3 class="video-scene">Scene: B6ByNegPMKs</h3>
+                        </div>
+                        <div class="video-wrapper">
+                            <video controls>
+                                <source src="static/video-ContinualLearning/Task11_B6ByNegPMKs_138.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="video-overlay">Speed 1X</div>
+                        </div>
+                        <h3 class="video-instruction"><p style="color: red;font-weight: bold;font-size: 22px;">Task11</p>Walk straight ahead along the corridor, looking at the wall, passing through these office areas, and finally stop next to the washbasin in front of the door.</h3>
+                    </div>
+
+                    <!-- right video -->
+                    <div class="video-card">
+                        <div class="video-meta">
+                            <h3 class="video-scene">Scene: sT4fr6TAbpF</h3>
+                        </div>
+                        <div class="video-wrapper">
+                            <video controls>
+                                <source src="static/video-ContinualLearning/Task12_sT4fr6TAbpF_713.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="video-overlay">Speed 1X</div>
+                        </div>
+                        <h3 class="video-instruction"><p style="color: red;font-weight: bold;font-size: 22px;">Task12</p>Enter the house from the balcony, walk straight ahead along the wall in the living room, then turn right, and continue walking forward until you reach the door to the two bedrooms.</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-text">
+                <div class="video-container">
+                    <!-- left video -->
+                    <div class="video-card">
+                        <div class="video-meta">
+                            <h3 class="video-scene">Scene: real-world scene 4</h3>
+                        </div>
+                        <div class="video-wrapper">
+                            <video controls>
+                                <source src="static/video-ContinualLearning/Task13.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="video-overlay">Speed 1X</div>
+                        </div>
+                        <h3 class="video-instruction"><p style="color: red;font-weight: bold;font-size: 22px;">Task13</p>Walk forward, passing between the yellow and red cones, then continue forward, passing to the right of the red ball, until you reach the red soccer ball next to the cardboard box.</h3>
+                    </div>
+
+                    <!-- right video -->
+                    <div class="video-card">
+                        <div class="video-meta">
+                            <h3 class="video-scene">Scene: S9hNv5qa7GM</h3>
+                        </div>
+                        <div class="video-wrapper">
+                            <video controls>
+                                <source src="static/video-ContinualLearning/Task14_S9hNv5qa7GM_446.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="video-overlay">Speed 1X</div>
+                        </div>
+                        <h3 class="video-instruction"><p style="color: red;font-weight: bold;font-size: 22px;">Task14</p>Go out of the kitchen, walk to the dining room, turn left, and stop at the sofa in the living room.</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-text">
+                <div class="video-container">
+                    <!-- left video -->
+                    <div class="video-card">
+                        <div class="video-meta">
+                            <h3 class="video-scene">Scene: 5LpN3gDmAk7</h3>
+                        </div>
+                        <div class="video-wrapper">
+                            <video controls>
+                                <source src="static/video-ContinualLearning/Task15_5LpN3gDmAk7_693.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="video-overlay">Speed 1X</div>
+                        </div>
+                        <h3 class="video-instruction"><p style="color: red;font-weight: bold;font-size: 22px;">Task15</p>First, exit this room and enter another room to the left of the stairs, eventually stopping in front of the bed.</h3>
+                    </div>
+
+                    <!-- right video -->
+                    <div class="video-card">
+                        <div class="video-meta">
+                            <h3 class="video-scene">Scene: PX4nDJXEHrG</h3>
+                        </div>
+                        <div class="video-wrapper">
+                            <video controls>
+                                <source src="static/video-ContinualLearning/Task16_PX4nDJXEHrG_549.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="video-overlay">Speed 1X</div>
+                        </div>
+                        <h3 class="video-instruction"><p style="color: red;font-weight: bold;font-size: 22px;">Task16</p>Walk forward to the landing at the top of the stairs, enter the room on the right, then turn left and enter the bathroom. Stop inside.</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-text">
+                <div class="video-container">
+                    <!-- left video -->
+                    <div class="video-card">
+                        <div class="video-meta">
+                            <h3 class="video-scene">Scene: VzqfbhrpDEA</h3>
+                        </div>
+                        <div class="video-wrapper">
+                            <video controls>
+                                <source src="static/video-ContinualLearning/Task17_VzqfbhrpDEA_87.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="video-overlay">Speed 1X</div>
+                        </div>
+                        <h3 class="video-instruction"><p style="color: red;font-weight: bold;font-size: 22px;">Task17</p>Turn right from your current position, walk straight ahead along the wall and cabinets, enter the kitchen through the door, then enter the dining room from the right, walk straight ahead along the left wall, and finally enter the wine storage room.</h3>
+                    </div>
+
+                    <!-- right video -->
+                    <div class="video-card">
+                        <div class="video-meta">
+                            <h3 class="video-scene">Scene: sKLMLpTHeUy</h3>
+                        </div>
+                        <div class="video-wrapper">
+                            <video controls>
+                                <source src="static/video-ContinualLearning/Task18_sKLMLpTHeUy_520.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="video-overlay">Speed 1X</div>
+                        </div>
+                        <h3 class="video-instruction"><p style="color: red;font-weight: bold;font-size: 22px;">Task18</p>First, find the exit of the current room, go out through the door, then continue forward until you reach the left side of the stairs. Stop at the entrance of the room on the left.</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section class="section experiment-section">
+            <h2 class="section-title">Zero-Shot Generalization Phase Experiments</h2>
+            <div class="content-text">
+                <div class="video-container">
+                    <!-- left video -->
+                    <div class="video-card">
+                        <div class="video-meta">
+                            <h3 class="video-scene">Scene: JeFG25nYj2p</h3>
+                        </div>
+                        <div class="video-wrapper">
+                            <video controls>
+                                <source src="static/video-ZeroShot/Task19_zsNo4HB9uLZ_385.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="video-overlay">Speed 1X</div>
+                        </div>
+                        <h3 class="video-instruction"><p style="color: red;font-weight: bold;font-size: 22px;">Task19</p>Leave the bathroom and go straight across through the pantry and kitchen Stop just past the counters in the kitchen.</h3>
+                    </div>
+
+                    <!-- right video -->
+                    <div class="video-card">
+                        <div class="video-meta">
+                            <h3 class="video-scene">Scene: real-world scene 5</h3>
+                        </div>
+                        <div class="video-wrapper">
+                            <video controls>
+                                <source src="static/video-ZeroShot/Task20.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="video-overlay">Speed 1X</div>
+                        </div>
+                        <h3 class="video-instruction"><p style="color: red;font-weight: bold;font-size: 22px;">Task20</p>Walk forward along the ramp, around the obstacle, go around the yellow railing to the left, continue forward, turn left, and finally stop in front of the red traffic cones.</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-text">
+                <div class="video-container">
+                    <!-- left video -->
+                    <div class="video-card">
+                        <div class="video-meta">
+                            <h3 class="video-scene">Scene: Vvot9Ly1tCj</h3>
+                        </div>
+                        <div class="video-wrapper">
+                            <video controls>
+                                <source src="static/video-ZeroShot/Task21_TbHJrupSAjP_407.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="video-overlay">Speed 1X</div>
+                        </div>
+                        <h3 class="video-instruction"><p style="color: red;font-weight: bold;font-size: 22px;">Task21</p>Leave the room and make a left.  Walk down the hallway and make a right when you get past the bannister of the staircase.  Walk past the staircase, which will be on your right as you pass.  Walk through the doorway and stop.</h3>
+                    </div>
+
+                    <!-- right video -->
+                    <div class="video-card">
+                        <div class="video-meta">
+                            <h3 class="video-scene">Scene: 1pXnuDYAj8r</h3>
+                        </div>
+                        <div class="video-wrapper">
+                            <video controls>
+                                <source src="static/video-ZeroShot/Task22_QUCTc6BB5sX_1701.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="video-overlay">Speed 1X</div>
+                        </div>
+                        <h3 class="video-instruction"><p style="color: red;font-weight: bold;font-size: 22px;">Task22</p>Turn around and go to your right. Turn right and go passed the painting. Then go left to go into the bar area. Pass the bar and go towards the dining table. Stop in the dining room near the table.</h3>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="content-text">
+                <div class="video-container">
+                    <!-- left video -->
+                    <div class="video-card">
+                        <div class="video-meta">
+                            <h3 class="video-scene">Scene: real-world scene 6</h3>
+                        </div>
+                        <div class="video-wrapper">
+                            <video controls>
+                                <source src="static/video-ZeroShot/Task23.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="video-overlay">Speed 1X</div>
+                        </div>
+                        <h3 class="video-instruction"><p style="color: red;font-weight: bold;font-size: 22px;">Task23</p>Walk straight along the tactile paving, go around the orange traffic cones to the right to avoid bumping into the red pillar, cross the yellow railing to the right, walk forward a bit, and finally stop in front of the pillar.</h3>
+                    </div>
+
+                    <!-- right video -->
+                    <div class="video-card">
+                        <div class="video-meta">
+                            <h3 class="video-scene">Scene: EDJbREhghzL</h3>
+                        </div>
+                        <div class="video-wrapper">
+                            <video controls>
+                                <source src="static/video-ZeroShot/Task24_2azQ1b91cZZ_1265.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="video-overlay">Speed 1X</div>
+                        </div>
+                        <h3 class="video-instruction"><p style="color: red;font-weight: bold;font-size: 22px;">Task24</p>Turn right on the second arch. Turn left. Pass the kitchen. Wait near the fireplace.</h3>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+
+        <section class="section">
+            <h2 class="section-title">Comparison Experiment Results</h2>
+            <h2 class="section-subtitle">Continual Learning Phase (Seen Scenes)</h2>
+            <div class="image-container">
+                <img src="static/result1.png" alt="Main picture">
+            </div>
+            <div class="image-container">
+                <img src="static/result2.png" alt="Main picture">
+            </div>
+            <div class="image-container">
+                <img src="static/result3.png" alt="Main picture">
+            </div>
+            <div class="image-container">
+                <img src="static/result4.png" alt="Main picture">
+            </div>
+            <p class="content-text">
+                Test results ( (a) <strong>SPL ↑</strong>, 
+                (b) <strong>F-SPL ↓</strong>, 
+                (c) <strong>OSR ↑</strong>, 
+                (d) <strong>F-OSR ↓</strong>) 
+                of comparison experiment under the L VLN settings.
+            </p>
+            <h2 class="section-subtitle">Zero-Shot Generalization Phase (Unseen Scenes)</h2>
+            <div class="image-container">
+                <img src="static/result5.png" alt="Main picture" style="width: 70%;height: auto;">
+            </div>
+            <div class="image-container">
+                <img src="static/result6.png" alt="Main picture">
+            </div>
+            <p class="content-text">
+                Evolving generalization. Average SR on unseen Tasks 19--24 evaluated after training milestones (T3, 6, 9, 12, 15, 18). It improves from 52.8% to 62.2%, while baselines plateau or decline.
+            </p>
+            <h2 class="section-subtitle" style="font-size: 1.5rem;">For more ablation experimental analysis, please refer to the main text and Appendix of our paper. </h2>
+        </section>
+    </div>
+</body>
+</html>
