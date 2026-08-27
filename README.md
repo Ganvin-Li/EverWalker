@@ -1,13 +1,20 @@
 # Evolving the Prototype Journey: Lifelong Vision-and-Language Navigation with Prototype Adaptation
 
+<p align="center">
+  <b>🎉 Accepted by IEEE Transactions on Circuits and Systems for Video Technology (T-CSVT)</b>
+</p>
 
 <p align="center">
   <a href="https://doi.org/10.1109/TCSVT.2026.3727681"><img src="https://img.shields.io/badge/IEEE-TCSVT%202026-00629B?style=flat-square&logo=ieee&logoColor=white" alt="Paper"></a>
+  &nbsp;&nbsp;&nbsp;&nbsp;
   <a href="https://ganvin-li.github.io/EverWalker/"><img src="https://img.shields.io/badge/Project-Page-1f293d?style=flat-square&logo=githubpages&logoColor=white" alt="Project Page"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow?style=flat-square" alt="License"></a>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-yellow?style=flat-square" alt="License"></a>
+  &nbsp;&nbsp;&nbsp;&nbsp;
   <a href="https://github.com/Ganvin-Li/EverWalker/stargazers"><img src="https://img.shields.io/github/stars/Ganvin-Li/EverWalker?style=flat-square&color=orange" alt="Stars"></a>
 </p>
 
+---
 
 <div align="center">
 <img src="assets/Figure.png" width="90%">
@@ -35,12 +42,12 @@
 ## ✨ Key Features
 
 ### Lifelong Learning without Forgetting
-- ✅ **Only 4.3% forgetting rate** (11% improvement over baselines)
-- ✅ **67.3% average success rate** across 18 continual tasks
+- ✅ **Low forgetting rate**
+- ✅ **High average success rate** across continual tasks
 - ✅ **Strong zero-shot generalization** to unseen scenes
 
 ### Efficient and Scalable
-- ⚡ **4% computational overhead**: Minimal additional cost
+- ⚡ **Computational overhead**: Minimal additional cost
 - 🔄 **Dynamic adaptation**: Step-level LoRA generation
 
 ### Comprehensive Framework
@@ -142,81 +149,9 @@ bash scripts/streamvln_train_protostream.sh
 ```bash
 # Evaluate on all tasks
 python streamvln_eval.py \
-    --checkpoint outputs/protostream/checkpoints/task_1.pth \
+    --checkpoint outputs/protostream/checkpoints \
     --config config/vln_r2r.yaml \
     --output_dir outputs/evaluation
-```
-
-
----
-
-## 📁 Project Structure
-
-```
-EverWalker/
-├── config/                          # Configuration files
-│   └── vln_r2r.yaml                # StreamVLN R2R config
-│
-├── llava/                           # Vision-language model
-│
-├── scripts/                         # Training and evaluation scripts
-│   ├── streamvln_train_protostream.sh
-│   ├── zero2.json                  # DeepSpeed config
-│   └── zero3.json
-│
-├── streamvln/                       # Main source code
-│   ├── model/                       # Model implementations
-│   │   ├── continual_learning.py   # Continual learning utils
-│   │   ├── hyper_lora_layers.py    # HyperNetwork generators
-│   │   ├── prototype_manager.py    # Prototype bank management
-│   │   ├── scene_encoder.py        # Scene feature encoder
-│   │   ├── triple_distillation.py  # Multi-level distillation
-│   │   └── stream_video_vln.py     # Main VLN model
-│   │
-│   ├── dataset/                     # Data processing
-│   ├── habitat_extensions/          # Habitat simulator extensions
-│   └── utils/                       # Utility functions
-│       ├── dist.py                  # Distributed training
-│       └── utils.py
-│
-├── streamvln_train.py              # Training script
-├── streamvln_eval.py               # Evaluation script
-├── streamvln_eval_baseline.py      # Baseline evaluation
-├── args.py                          # Argument parser
-├── measures.py                      # Evaluation metrics
-├── maps.py                          # Navigation maps
-│
-├── requirements.txt                 # Python dependencies
-└── README.md                        # This file
-```
-
----
-
-## 🎯 Reproducing Results
-
-### Expected Outputs
-
-After training completes, you should see:
-
-```
-outputs/
-├── EverWalker/
-│   ├── checkpoints/
-│   │   ├── task_1.pth
-│   │   ├── task_2.pth
-│   │   └── ...
-│   ├── prototypes/
-│   │   ├── task_1_protos.npy
-│   │   └── ...
-│   ├── teacher_loras/
-│   │   └── ...
-│   └── logs/
-│       └── training.log
-│
-└── results/
-    ├── task_wise_sr.json
-    ├── forgetting_rate.json
-    └── ablation_results.json
 ```
 
 ---
