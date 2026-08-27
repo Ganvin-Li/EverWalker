@@ -1,5 +1,12 @@
-# Evolving the Prototype Journey:  Lifelong Vision-and-Language Navigation with Prototype Adaptation
+# Evolving the Prototype Journey: Lifelong Vision-and-Language Navigation with Prototype Adaptation
 
+
+<p align="center">
+  <a href="https://doi.org/10.1109/TCSVT.2026.3727681"><img src="https://img.shields.io/badge/IEEE-TCSVT%202026-00629B?style=flat-square&logo=ieee&logoColor=white" alt="Paper"></a>
+  <a href="https://ganvin-li.github.io/EverWalker/"><img src="https://img.shields.io/badge/Project-Page-1f293d?style=flat-square&logo=githubpages&logoColor=white" alt="Project Page"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow?style=flat-square" alt="License"></a>
+  <a href="https://github.com/Ganvin-Li/EverWalker/stargazers"><img src="https://img.shields.io/github/stars/Ganvin-Li/EverWalker?style=flat-square&color=orange" alt="Stars"></a>
+</p>
 
 
 <div align="center">
@@ -51,9 +58,9 @@
 
 ```python
 # Soft routing over ALL prototypes (not top-k)
-similarities = cosine_similarity(z_t, prototypes)  # (K,)
-weights = softmax(similarities / temperature)       # (K,)
-weighted_proto = sum(weights * prototypes)         # (512,)
+similarities = cosine_similarity(z_t, prototypes)  
+weights = softmax(similarities / temperature)       
+weighted_proto = sum(weights * prototypes)         
 ```
 
 **2. HyperNetwork Design**
@@ -61,19 +68,19 @@ weighted_proto = sum(weights * prototypes)         # (512,)
 ```python
 # Step-level LoRA generation
 for layer_size in unique_sizes:
-    lora_A = generator_A(weighted_proto)  # rank × in_dim
-    lora_B = generator_B(weighted_proto)  # out_dim × rank
+    lora_A = generator_A(weighted_proto)
+    lora_B = generator_B(weighted_proto)
 ```
 
 **3. Multi-Level Distillation**
 ```python
 # Complete distillation chain
-L_total = L_task                    # Task loss
-        + λ_sp * L_sp              # Single-proto KL
-        + λ_pp * L_pp              # Proto-pair cosine
-        + λ_cp * L_cp              # Cross-proto MSE
-        + λ_lora * L_lora          # HyperNet output (NEW!)
-        + λ_div * L_div            # Diversity loss
+L_total = L_task
+        + λ_sp * L_sp
+        + λ_pp * L_pp
+        + λ_cp * L_cp
+        + λ_lora * L_lora
+        + λ_div * L_div
 ```
 
 ---
@@ -210,4 +217,23 @@ outputs/
     ├── task_wise_sr.json
     ├── forgetting_rate.json
     └── ablation_results.json
+```
+
+---
+
+## 📖 Citation
+
+If you find our work useful in your research, please consider citing:
+
+```bibtex
+@ARTICLE{11667662,
+  author={Li, Gan and Wang, Xudong and Liao, Yue and Lv, Xuewei and Dong, Jiahua and Liu, Xiyao and Wang, Yanbo and Qin, Pinle and Liu, Lianqing and Han, Zhi},
+  journal={IEEE Transactions on Circuits and Systems for Video Technology}, 
+  title={Evolving the Prototype Journey: Lifelong Vision-and-Language Navigation with Prototype Adaptation}, 
+  year={2026},
+  volume={},
+  number={},
+  pages={1-1},
+  keywords={Vision-and-language navigation;continual learning;robotic learning;embodied AI},
+  doi={10.1109/TCSVT.2026.3727681}}
 ```

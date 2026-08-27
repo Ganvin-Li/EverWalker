@@ -93,6 +93,12 @@
             color: white;
         }
 
+        .btn-cite {
+            background-color: #000000;
+            color: white;
+            font-family: inherit;
+        }
+
         .btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
@@ -408,7 +414,7 @@
             text-align: center;
             margin: 12px auto 24px;
             max-width: 900px;
-            font-size: 1.15rem;
+            font-size: 1.35rem;
             line-height: 1.9;
             color: #2c3e50;
         }
@@ -420,6 +426,88 @@
         .authors .ieee {
             font-style: italic;
             color: #555;
+        }
+
+        .bibtex-card {
+            max-width: 900px;
+            margin: 0 auto;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #e3e7ee;
+            box-shadow: 0 4px 16px rgba(31, 41, 61, 0.06);
+        }
+
+        .bibtex-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 16px;
+            background: #f0f2f6;
+            border-bottom: 1px solid #e3e7ee;
+        }
+
+        .bibtex-file {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #7c8798;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            font-family: 'SFMono-Regular', Consolas, Menlo, monospace;
+        }
+
+        .bibtex-copy {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border: 1px solid #d3d9e3;
+            border-radius: 6px;
+            background: #ffffff;
+            color: #4a5568;
+            font-size: 0.82rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .bibtex-copy:hover {
+            background: #1f293d;
+            border-color: #1f293d;
+            color: #ffffff;
+        }
+
+        .bibtex-copy.copied {
+            background: #e7f6ed;
+            border-color: #9fd8b6;
+            color: #2f7d51;
+        }
+
+        .bibtex-code {
+            margin: 0;
+            padding: 22px 24px;
+            background: #fafbfc;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.92rem;
+            line-height: 1.75;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            color: #3c4353;
+            transition: box-shadow 0.4s ease;
+        }
+
+        .bibtex-code.flash { box-shadow: inset 0 0 0 2px rgba(122, 154, 214, 0.75); }
+
+        .bt-at  { color: #8250df; font-weight: 600; }
+        .bt-key { color: #b8600c; }
+        .bt-f   { color: #1f5fbf; }
+        .bt-v   { color: #2f7d51; }
+        .bt-p   { color: #a3adbd; }
+
+        @media (max-width: 768px) {
+            .bibtex-code { font-size: 0.78rem; padding: 16px; }
         }
 
         .orcid-link {
@@ -492,6 +580,59 @@
             }
         };
     </script>
+    <script>
+        function copyBibtex(triggerEl, shouldScroll) {
+            var pre = document.getElementById('bibtex-content');
+            var text = pre ? pre.innerText : '';
+
+            function afterCopy() {
+                if (triggerEl) {
+                    if (!triggerEl.dataset.originalHtml) {
+                        triggerEl.dataset.originalHtml = triggerEl.innerHTML;
+                    }
+                    triggerEl.classList.add('copied');
+                    triggerEl.innerHTML = triggerEl.classList.contains('btn-cite')
+                        ? '&nbsp&nbsp&nbsp&nbspCopied!'
+                        : 'Copied!';
+                    setTimeout(function () {
+                        triggerEl.innerHTML = triggerEl.dataset.originalHtml;
+                        triggerEl.classList.remove('copied');
+                    }, 1800);
+                }
+                if (shouldScroll) {
+                    var section = document.getElementById('bibtex');
+                    if (!section) return;
+                    section.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    var box = document.getElementById('bibtex-content');
+                    if (box) {
+                        box.classList.add('flash');
+                        setTimeout(function () { box.classList.remove('flash'); }, 1400);
+                    }
+                }
+            }
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(afterCopy).catch(function () {
+                    fallbackCopy(text);
+                    afterCopy();
+                });
+            } else {
+                fallbackCopy(text);
+                afterCopy();
+            }
+        }
+
+        function fallbackCopy(text) {
+            var ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            try { document.execCommand('copy'); } catch (e) { console.error(e); }
+            document.body.removeChild(ta);
+        }
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/startup.js"></script>
     
 
@@ -522,12 +663,24 @@
             </div>
 
             <div class="buttons">
+                <a href="https://doi.org/10.1109/TCSVT.2026.3727681" class="btn btn-arxiv" target="_blank" rel="noopener">
+                    <svg class="btn-icon" width="16" height="16" viewBox="0 0 384 512" fill="currentColor">
+                        <path d="M64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-288-128 0c-17.7 0-32-14.3-32-32L224 0 64 0zM256 0l0 128 128 0L256 0zM112 256l160 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-160 0c-8.8 0-16-7.2-16-16s7.2-16 16-16zm0 64l160 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-160 0c-8.8 0-16-7.2-16-16s7.2-16 16-16zm0 64l160 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-160 0c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/>
+                    </svg>
+                    &nbsp&nbspPaper
+                </a>
                 <a href="https://github.com/Ganvin-Li/EverWalker" class="btn btn-code">
                     <svg class="btn-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
                         <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
                     </svg>
                     &nbsp&nbspCode
                 </a>
+                <button class="btn btn-cite" onclick="copyBibtex(this, true)" type="button">
+                    <svg class="btn-icon" width="16" height="16" viewBox="0 0 448 512" fill="currentColor">
+                        <path d="M0 216C0 149.7 53.7 96 120 96l8 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-8 0c-30.9 0-56 25.1-56 56l0 8 64 0c35.3 0 64 28.7 64 64l0 64c0 35.3-28.7 64-64 64l-64 0c-35.3 0-64-28.7-64-64l0-32 0-32 0-72zm256 0c0-66.3 53.7-120 120-120l8 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-8 0c-30.9 0-56 25.1-56 56l0 8 64 0c35.3 0 64 28.7 64 64l0 64c0 35.3-28.7 64-64 64l-64 0c-35.3 0-64-28.7-64-64l0-32 0-32 0-72z"/>
+                    </svg>
+                    &nbsp&nbspCite
+                </button>
             </div>
         </header>
 
@@ -536,31 +689,17 @@
         </div>
 
         <div class="content-text">
-            The proposed Lifelong Robotic vision-and-language navigation task. 
-            a). EverWalker enables lifelong learning and continual evolution across diverse navigation scenes. 
-            It accumulates navigation experience into a dynamic prototype bank during lifelong learning and achieves 
-            task-specific inference by providing task-specific LoRA with hypernetwork adaptation. 
-            b). EverWalker performs well in anti-forgetting, during lifelong learning. 
-            c). As EverWalker learns across diverse navigation scenes, it demonstrates superior generalization
-            performance in unseen scenes.
+            Illustration of the proposed lifelong robotic vision-and-language navigation task. 
+            (a) EverWalker enables lifelong learning and continual evolution across diverse navigation scenes. 
+            During lifelong learning, it accumulates navigation experience into a dynamic prototype bank and performs adaptive inference by generating step-specific LoRA parameters through hypernetwork adaptation. 
+            (b) EverWalker effectively mitigates catastrophic forgetting during lifelong learning. 
+            (c) As EverWalker learns from increasingly diverse navigation scenes, it achieves improved generalization performance in unseen scenes.
         </div>
         
         <div class="abstract-content">
             <h2 class="section-title">Abstract</h2>
             <div class="abstract-text">
-                Adapting vision-and-language navigation (VLN) agents to continually evolving environments is essential 
-                for dynamic real-world deployment. However, naively fine-tuning agents on new scenes often leads to catastrophic 
-                forgetting of previously learned scenes and degraded generalization to unseen environments. 
-                In this paper, we propose <strong>EverWalker</strong>, a lifelong VLN agent designed to thrive 
-                in an ever-changing world by evolving its navigation knowledge through a prototype-driven journey. 
-                Instead of storing independent step-specific adapters, EverWalker introduces a 
-                <strong>Dynamic Prototype Bank (DyproBank)</strong> that incrementally accumulates compact scene prototypes, 
-                capturing essential navigation knowledge. Building upon this evolving prototype space, 
-                we further propose a <strong>Prototype-conditioned Hypernetwork (PHYP-Net)</strong> that dynamically generates 
-                task-adaptive LoRA parameters conditioned on aggregated prototypes, enabling efficient step-specific inference 
-                without explicit task identifiers. We also introduce a multi-level distillation strategy to facilitate 
-                progressive knowledge accumulation across continual scenes. 
-                Extensive simulator and real-world experiments are performed to demonstrate the effectiveness and superiority of EverWalker. 
+                Adapting vision-and-language navigation (VLN) agents to continually evolving environments is crucial for robust deployment in dynamic real-world scenarios. However, naively fine-tuning agents on newly encountered scenes often causes catastrophic forgetting of previously learned environments and degrades their generalization ability to unseen scenes. In this paper, we propose <strong>EverWalker</strong>, a lifelong VLN agent that continuously evolves its navigation knowledge through a prototype-driven adaptation mechanism. Rather than storing independent scene-specific adapters to mitigate forgetting, EverWalker maintains a <strong>Dynamic Prototype Bank (DyproBank)</strong>, which incrementally accumulates compact observation prototypes to encode essential navigation knowledge. Built upon this evolving prototype space, we further introduce a <strong>Prototype-conditioned Hypernetwork (PHYP-Net)</strong>, which dynamically generates step-level adaptive LoRA parameters conditioned on aggregated prototypes. This design enables efficient step-specific inference without relying on explicit task identifiers. In addition, we develop a multi-level distillation strategy to facilitate progressive knowledge accumulation across continual scenes while preserving previously acquired navigation capabilities. Extensive simulation and real-world experiments demonstrate the effectiveness of EverWalker in mitigating catastrophic forgetting and improving generalization under lifelong VLN settings.
             </div>
         </div>
 
@@ -569,7 +708,7 @@
             <div class="image-container">
                 <img src="static/F2.png" alt="Main picture">
             </div>
-            <p class="content-text">Illustration for the proposed EverWalker. Our framework consists of two core components: A Dynamic Prototype Bank maintains an evolving library of scene prototypes with soft routing for knowledge aggregation. A Prototype Hypernetwork dynamically generates task-specific LoRA conditioned on aggregated prototypes, enabling adaptive navigation while preserving shared knowledge. </p>
+            <p class="content-text">Illustration for the proposed EverWalker. EverWalker consists of two core components: A Dynamic Prototype Bank maintains an evolving library of scene prototypes with soft routing for knowledge aggregation. A Prototype Hypernetwork dynamically generates task-specific LoRA conditioned on aggregated prototypes, enabling adaptive navigation while preserving shared knowledge.</p>
             
         </section>
 
@@ -577,13 +716,9 @@
             <h2 class="section-title">EverWalker Algorithms</h2>
             <div style="height: 10%;width: auto;">
                 <div class="image-container">
-                    <img src="static/algorithm1.png" alt="Main picture" width="85%" height="auto">
-                </div>
-                <div class="image-container">
-                    <img src="static/algorithm2.png" alt="Main picture" width="85%" height="auto">
+                    <img src="static/algorithm1.png" alt="Main picture" width="50%" height="auto">
                 </div>
             </div>
-            <p class="content-text">For clarity, a summary of the proposed EverWalker training algorithm and the inference algorithm is provided above.</p>
         </section>
 
         <section class="section">
@@ -592,7 +727,7 @@
                 <img src="static/F3.png" alt="Main picture">
             </div>
             <p class="content-text">
-                Illustration of our Lifelong Vision-Language Navigation (LVLN) benchmark. The benchmark consists of a sequence of 24 distinct navigation tasks. The blue region (Tasks 1--18) represents the Continual Learning Phase, where the agent sequentially learns across diverse seen environments. The orange region (Tasks 19--24) denotes the Zero-Shot Generalization Phase, evaluated on entirely unseen scenes to assess the agent's evolving adaptability.
+                Illustration of the proposed robotic navigation system. The platform integrates a quadruped robot for mobility, a camera for visual perception, and a remote server for running the navigation robot to collect training data.
             </p>
         </section>
 
@@ -1036,32 +1171,53 @@
                 <img src="static/result1.png" alt="Main picture">
             </div>
             <div class="image-container">
-                <img src="static/result2.png" alt="Main picture">
-            </div>
-            <div class="image-container">
-                <img src="static/result3.png" alt="Main picture">
-            </div>
-            <div class="image-container">
                 <img src="static/result4.png" alt="Main picture">
             </div>
             <p class="content-text">
-                Test results ( (a) <strong>SPL ↑</strong>, 
-                (b) <strong>F-SPL ↓</strong>, 
-                (c) <strong>OSR ↑</strong>, 
-                (d) <strong>F-OSR ↓</strong>) 
-                of comparison experiment under the L VLN settings.
+                Comparison across the 18 continual learning tasks, including EverWalker's radar chart: (a) SPL, (b) F-SPL, (c) OSR, (d) F-OSR.
             </p>
             <h2 class="section-subtitle">Zero-Shot Generalization Phase (Unseen Scenes)</h2>
             <div class="image-container">
-                <img src="static/result5.png" alt="Main picture" style="width: 70%;height: auto;">
+                <img src="static/result5.png" alt="Main picture" style="width: 60%;height: auto;">
             </div>
             <div class="image-container">
-                <img src="static/result6.png" alt="Main picture">
+                <img src="static/result6.png" alt="Main picture" style="width: 80%;height: auto;">
             </div>
             <p class="content-text">
-                Evolving generalization. Average SR on unseen Tasks 19--24 evaluated after training milestones (T3, 6, 9, 12, 15, 18). It improves from 52.8% to 62.2%, while baselines plateau or decline.
-            </p>
+                Evolving generalization. The proposed EverWalker's SR and SPL on unseen Tasks 19--24 evaluated after training milestones (T3, T6, T9, T12, T15, T18). Its five-seed mean SR improves from 53.5% to 55.5%.            </p>
             <h2 class="section-subtitle" style="font-size: 1.5rem;">For more ablation experimental analysis, please refer to the main text and Appendix of our paper. </h2>
+        </section>
+
+
+        <section class="section experiment-section" id="bibtex">
+            <h2 class="section-title">BibTeX</h2>
+            <div class="bibtex-card">
+                <div class="bibtex-bar">
+                    <span class="bibtex-file">
+                        <svg width="14" height="14" viewBox="0 0 384 512" fill="currentColor">
+                            <path d="M64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-288-128 0c-17.7 0-32-14.3-32-32L224 0 64 0zM256 0l0 128 128 0L256 0z"/>
+                        </svg>
+                        citation
+                    </span>
+                    <button class="bibtex-copy" type="button" onclick="copyBibtex(this)">
+                        <svg width="13" height="13" viewBox="0 0 448 512" fill="currentColor">
+                            <path d="M208 0L332.1 0c12.7 0 24.9 5.1 33.9 14.1l67.9 67.9c9 9 14.1 21.2 14.1 33.9L448 336c0 26.5-21.5 48-48 48l-192 0c-26.5 0-48-21.5-48-48l0-288c0-26.5 21.5-48 48-48zM48 128l80 0 0 64-64 0 0 256 192 0 0-32 64 0 0 48c0 26.5-21.5 48-48 48L48 512c-26.5 0-48-21.5-48-48L0 176c0-26.5 21.5-48 48-48z"/>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+<pre id="bibtex-content" class="bibtex-code"><span class="bt-at">@ARTICLE</span><span class="bt-p">{</span><span class="bt-key">11667662</span><span class="bt-p">,</span>
+  <span class="bt-f">author</span><span class="bt-p">={</span><span class="bt-v">Li, Gan and Wang, Xudong and Liao, Yue and Lv, Xuewei and Dong, Jiahua and Liu, Xiyao and Wang, Yanbo and Qin, Pinle and Liu, Lianqing and Han, Zhi</span><span class="bt-p">},</span>
+  <span class="bt-f">journal</span><span class="bt-p">={</span><span class="bt-v">IEEE Transactions on Circuits and Systems for Video Technology</span><span class="bt-p">},</span>
+  <span class="bt-f">title</span><span class="bt-p">={</span><span class="bt-v">Evolving the Prototype Journey: Lifelong Vision-and-Language Navigation with Prototype Adaptation</span><span class="bt-p">},</span>
+  <span class="bt-f">year</span><span class="bt-p">={</span><span class="bt-v">2026</span><span class="bt-p">},</span>
+  <span class="bt-f">volume</span><span class="bt-p">={},</span>
+  <span class="bt-f">number</span><span class="bt-p">={},</span>
+  <span class="bt-f">pages</span><span class="bt-p">={</span><span class="bt-v">1-1</span><span class="bt-p">},</span>
+  <span class="bt-f">keywords</span><span class="bt-p">={</span><span class="bt-v">Vision-and-language navigation;continual learning;robotic learning;embodied AI</span><span class="bt-p">},</span>
+  <span class="bt-f">doi</span><span class="bt-p">={</span><span class="bt-v">10.1109/TCSVT.2026.3727681</span><span class="bt-p">}}</span></pre>
+<span class="bt-p">}</span></pre>
+            </div>
         </section>
     </div>
 </body>
